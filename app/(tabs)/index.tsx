@@ -1,24 +1,35 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.texto}>Cecília nas estrelas ✨</Text>
-    </View>
+      <ImageBackground 
+      source={require('@/assets/images/fundocecilia.jpeg')} 
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.containerContent}>
+        <Text style={styles.texto}>Cecília nas estrelas </Text>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
+    flex: 1, 
+  },
+  containerContent: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 80,
     alignItems: 'center',
-    backgroundColor: '#1D3D47', // Cor escura do seu template antigo
+   
   },
   texto: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 35,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
