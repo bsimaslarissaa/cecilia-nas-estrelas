@@ -1,55 +1,36 @@
 import { Image } from 'expo-image';
 import React from 'react';
-import {
-  ImageBackground,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function HomeScreen() {
-  const { width, height } = useWindowDimensions();
-
-  const logoHeight = height * 0.23;
-  const ceciliaSize = Math.min(width * 0.85, height * 0.36);
-
   return (
     <ImageBackground
       source={require('@/assets/images/fundocecilia.jpeg')}
       style={styles.background}
       resizeMode="cover"
     >
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView
-          contentContainerStyle={styles.containerContent}
-          showsVerticalScrollIndicator={false}
-        >
+      <SafeAreaView style={styles.containerContent}>
+
+        <View style={styles.topoContainer}>
           <Image
             source={require('@/assets/images/logo-cecilia.png')}
-            style={[styles.logo, { height: logoHeight }]}
+            style={styles.logo}
             contentFit="contain"
           />
-
           <Text style={styles.subtitulo}>
             Aprenda astronomia{"\n"}brincando ✨
           </Text>
+        </View>
 
-          <Image
-            source={require('@/assets/images/ceciliainicio.png')}
-            style={[
-              styles.cecilia,
-              {
-                width: ceciliaSize,
-                height: ceciliaSize,
-              },
-            ]}
-            contentFit="contain"
-          />
+        <Image
+          source={require('@/assets/images/ceciliainicio.png')}
+          style={styles.cecilia}
+          contentFit="contain"
+        />
 
+        <View style={styles.baseContainer}>
           <Pressable style={styles.botao}>
             <Text style={styles.textoBotao}>
               Entrar como convidado
@@ -60,12 +41,12 @@ export default function HomeScreen() {
             <Text style={styles.loginTexto}>
               Já possui uma conta?
             </Text>
-
             <Text style={styles.loginLink}>
               Entrar
             </Text>
           </View>
-        </ScrollView>
+        </View>
+
       </SafeAreaView>
     </ImageBackground>
   );
@@ -76,49 +57,55 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  safeArea: {
+  containerContent: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between', 
+    paddingHorizontal: wp('5%'),    
+    paddingVertical: hp('2%'),
   },
 
-  containerContent: {
-    flexGrow: 1,
+  topoContainer: {
+    marginTop: -hp('10%'),
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    gap: 14,
+    width: '100%',
+    gap: hp('0%'),
   },
 
   logo: {
-    width: '90%',
+    width: wp('130%'), 
+    height: hp('36%'), 
   },
 
   subtitulo: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: hp('2.2%'),           
     textAlign: 'center',
-    lineHeight: 26,
+    lineHeight: hp('3%'),           
     fontWeight: '500',
+    marginTop: -hp('10%'), 
   },
 
   cecilia: {
-    maxWidth: 360,
-    maxHeight: 360,
+    width: wp('100%'),               
+    height: hp('38%'),
+  },
+
+
+  baseContainer: {
+    alignItems: 'center',
+    width: '100%',
+    gap: hp('2.5%'),
   },
 
   botao: {
-    width: '90%',
-    maxWidth: 380,
+    width: wp('85%'),
     backgroundColor: '#5C38D6',
-    paddingVertical: 18,
-    borderRadius: 35,
+    paddingVertical: hp('2%'),      
+    borderRadius: wp('8%'),         
     alignItems: 'center',
-
     shadowColor: '#8A6CFF',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 8,
     elevation: 8,
@@ -126,9 +113,8 @@ const styles = StyleSheet.create({
 
   textoBotao: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: hp('2.4%'),           
     fontWeight: 'bold',
-    textAlign: 'center',
   },
 
   loginContainer: {
@@ -137,14 +123,14 @@ const styles = StyleSheet.create({
 
   loginTexto: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: hp('2%'),
   },
 
   loginLink: {
     color: '#B78DFF',
-    fontSize: 21,
+    fontSize: hp('2.5%'),           
     fontWeight: 'bold',
-    marginTop: 6,
+    marginTop: hp('0.5%'),
     textDecorationLine: 'underline',
   },
 });
