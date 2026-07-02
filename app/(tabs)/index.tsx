@@ -1,6 +1,6 @@
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, Pressable, Alert  } from 'react-native';
 import { Image } from 'expo-image';
+import React from 'react';
+import { ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
