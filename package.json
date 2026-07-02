@@ -44,5 +44,9 @@
     "eslint-config-expo": "~10.0.0",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "allowScripts": {
+    "expo@54.0.35": true,
+    "react-native-gesture-handler@2.28.0": true
+  }
 }
