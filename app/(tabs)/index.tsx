@@ -21,6 +21,7 @@ export default function HomeScreen() {
     <ImageBackground
       source={require('@/assets/images/fundocecilia.jpeg')}
       style={styles.background}
+      imageStyle={styles.backgroundImage}
       resizeMode="cover"
     >
       <SafeAreaView style={styles.safeArea}>
@@ -77,14 +78,23 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
   },
 
   safeArea: {
     flex: 1,
+    width: '100%',
   },
 
   scrollContainer: {
     flexGrow: 1,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
