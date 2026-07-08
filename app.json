@@ -3,7 +3,7 @@
     "name": "cecilia-nas-estrelas",
     "slug": "cecilia-nas-estrelas",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "cecilianasestrelas",
     "userInterfaceStyle": "automatic",

@@ -1,29 +1,44 @@
 import { Image, ImageBackground } from 'expo-image';
-import React from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View, Alert } from 'react-native';
+import { router, Stack } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
+import {
+    Animated,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-const PLANETAS = [
-  { id: '1', nome: 'Mercúrio', img: require('@/assets/images/mercurio.png') },
-  { id: '2', nome: 'Vênus', img: require('@/assets/images/venus.png') },
-  { id: '3', nome: 'Terra', img: require('@/assets/images/terra.png') },
-  { id: '4', nome: 'Marte', img: require('@/assets/images/marte.png') },
-  { id: '5', nome: 'Júpiter', img: require('@/assets/images/jupiter.png') },
-  { id: '6', nome: 'Saturno', img: require('@/assets/images/saturno.png') },
-  { id: '7', nome: 'Urano', img: require('@/assets/images/urano.png') },
-  { id: '8', nome: 'Netuno', img: require('@/assets/images/netuno.png') },
-];
 
 export default function SolarSystemScreen() {
+  const flutuar = useRef(new Animated.Value(0)).current;
 
-  const selecionarPlaneta = (nome: string) => {
-    Alert.alert('Planeta Escolhido', `Vamos explorar ${nome}! 🚀🪐`);
-  };
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(flutuar, {
+          toValue: -8,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(flutuar, {
+          toValue: 0,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [flutuar]);
 
-  const clicarNoSol = () => {
-    Alert.alert('O Rei do Sistema! ☀️', 'O Sol é uma estrela gigante e muito quente! Ela ilumina a Cecília e todos os planetas.');
-  };
+  const irParaSol = () => router.push('/missao-sol' as any);
+  const irParaMercurio = () => router.push('/missao-mercurio' as any);
+  const irParaVenus = () => router.push('/missao-venus' as any);
+  const irParaTerra = () => router.push('/missao-terra' as any);
+  const irParaMarte = () => router.push('/missao-marte' as any);
+  const irParaJupiter = () => router.push('/missao-jupiter' as any);
+  const irParaSaturno = () => router.push('/missao-saturno' as any);
+  const irParaUrano = () => router.push('/missao-urano' as any);
+  const irParaNetuno = () => router.push('/missao-netuno' as any);
 
   return (
     <ImageBackground
@@ -31,44 +46,118 @@ export default function SolarSystemScreen() {
       style={styles.background}
       contentFit="cover"
     >
-      <SafeAreaView style={styles.container}>
-        
-        <View style={styles.topo}>
-          <Text style={styles.titulo}>Sistema Solar ☀️</Text>
-          <Text style={styles.subtitulo}>Escolha um astro para explorar com a Cecília:</Text>
-        </View>
+      <Stack.Screen options={{ orientation: 'landscape' }} />
 
-        
-        <Pressable style={styles.cardSol} onPress={clicarNoSol}>
-          <Image 
-            source={require('@/assets/images/sol.png')} 
-            style={styles.imagemSol} 
-            contentFit="contain" 
-          />
-          <View style={styles.infoSol}>
-            <Text style={styles.nomeSol}>O Sol ☀️</Text>
-            <Text style={styles.detalheSol}>A estrela central do nosso sistema</Text>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.screen}> 
+          <View style={styles.header}>
+            <Text style={styles.titulo}>Sistema Solar </Text>
+            <Text style={styles.subtitulo}>
+              Toque em um planeta para começar uma missão.
+            </Text>
           </View>
-        </Pressable>
 
-        <FlatList
-          data={PLANETAS}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listaPlanetas}
-          renderItem={({ item }) => (
-            <Pressable style={styles.cardPlaneta} onPress={() => selecionarPlaneta(item.nome)}>
-              <Image 
-                source={item.img} 
-                style={styles.imagemPlaneta} 
-                contentFit="contain" 
-              />
-              <Text style={styles.nomePlaneta}>{item.nome}</Text>
+          <View style={styles.spaceArea}>
+            <Pressable style={styles.solContainer} onPress={irParaSol}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/sol.png')}
+                  style={styles.sol}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomeSol}>Sol</Text>
+              </Animated.View>
             </Pressable>
-          )}
-        />
 
+            <Pressable style={styles.mercurioContainer} onPress={irParaMercurio}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/mercurio.png')}
+                  style={styles.planetaPequeno}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Mercúrio</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.venusContainer} onPress={irParaVenus}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/venus.png')}
+                  style={styles.planetaMedio}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Vênus</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.terraContainer} onPress={irParaTerra}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/terra.png')}
+                  style={styles.planetaMedio}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Terra</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.marteContainer} onPress={irParaMarte}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/marte.png')}
+                  style={styles.planetaPequeno}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Marte</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.jupiterContainer} onPress={irParaJupiter}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/jupiter.png')}
+                  style={styles.planetaGrande}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Júpiter</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.saturnoContainer} onPress={irParaSaturno}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/saturno.png')}
+                  style={styles.saturno}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Saturno</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.uranoContainer} onPress={irParaUrano}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/urano.png')}
+                  style={styles.planetaMedio}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Urano</Text>
+              </Animated.View>
+            </Pressable>
+
+            <Pressable style={styles.netunoContainer} onPress={irParaNetuno}>
+              <Animated.View style={{ transform: [{ translateY: flutuar }] }}>
+                <Image
+                  source={require('@/assets/images/netuno.png')}
+                  style={styles.planetaMedio}
+                  contentFit="contain"
+                />
+                <Text style={styles.nomePlaneta}>Netuno</Text>
+              </Animated.View>
+            </Pressable>
+          </View>
+        </View>
       </SafeAreaView>
     </ImageBackground>
   );
@@ -78,80 +167,151 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  container: {
+
+  safeArea: {
     flex: 1,
-    paddingVertical: hp('2%'),
-    justifyContent: 'space-between',
   },
-  topo: {
-    paddingHorizontal: wp('6%'),
+
+  screen: {
+    flex: 1,
+    width: '100%',
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12, 
   },
+
+  header: {
+    alignItems: 'center',
+    marginTop: 0,
+  },
+
   titulo: {
     color: '#FFFFFF',
-    fontSize: hp('3.5%'),
-    fontWeight: 'bold',
-  },
-  subtitulo: {
-    color: '#B78DFF',
-    fontSize: hp('2%'),
-    marginTop: hp('0.5%'),
-  },
-  
-
-  cardSol: {
-    flexDirection: 'row', 
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 165, 0, 0.15)', 
-    marginHorizontal: wp('6%'),
-    padding: wp('4%'),
-    borderRadius: wp('5%'),
-    borderWidth: 1,
-    borderColor: 'rgba(255, 165, 0, 0.4)',
-    gap: wp('4%'),
-  },
-  imagemSol: {
-    width: wp('20%'),
-    height: wp('20%'),
-  },
-  infoSol: {
-    flex: 1,
-  },
-  nomeSol: {
-    color: '#FFD700', 
-    fontSize: hp('2.5%'),
-    fontWeight: 'bold',
-  },
-  detalheSol: {
-    color: '#FFFFFF',
-    fontSize: hp('1.8%'),
-    opacity: 0.8,
-  },
-
-  listaPlanetas: {
-    paddingHorizontal: wp('6%'),
-    alignItems: 'center',
-    gap: wp('5%'),
-  },
-  cardPlaneta: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(92, 56, 214, 0.15)',
-    padding: wp('4%'),
-    borderRadius: wp('6%'),
-    borderWidth: 1,
-    borderColor: 'rgba(138, 108, 255, 0.3)',
-    width: wp('40%'),
-    height: hp('26%'), 
-  },
-  imagemPlaneta: {
-    width: wp('24%'),
-    height: wp('24%'),
-    marginBottom: hp('1.5%'),
-  },
-  nomePlaneta: {
-    color: '#FFFFFF',
-    fontSize: hp('2.2%'),
+    fontSize: 26, 
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+
+  subtitulo: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 2,
+    lineHeight: 18,
+  },
+
+  spaceArea: {
+    flex: 1,
+    position: 'relative',
+    marginTop: 10, 
+  },
+
+  nomePlaneta: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: 2,
+    textShadowColor: '#8A6CFF',
+    textShadowRadius: 8,
+  },
+
+  nomeSol: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: -10,
+    textShadowColor: '#8A6CFF',
+    textShadowRadius: 8,
+  },
+
+  solContainer: {
+    position: 'absolute',
+    left: -60,
+    top: '15%',
+    alignItems: 'center',
+  },
+
+  sol: {
+    width: 160,
+    height: 160,
+  },
+
+  mercurioContainer: {
+    position: 'absolute',
+    left: '16%',
+    top: '45%',
+    alignItems: 'center',
+  },
+
+  venusContainer: {
+    position: 'absolute',
+    left: '26%',
+    top: '25%',
+    alignItems: 'center',
+  },
+
+  terraContainer: {
+    position: 'absolute',
+    left: '37%',
+    top: '50%',
+    alignItems: 'center',
+  },
+
+  marteContainer: {
+    position: 'absolute',
+    left: '49%',
+    top: '30%',
+    alignItems: 'center',
+  },
+
+  jupiterContainer: {
+    position: 'absolute',
+    left: '60%',
+    top: '15%',
+    alignItems: 'center',
+  },
+
+  saturnoContainer: {
+    position: 'absolute',
+    left: '73%',
+    top: '40%',
+    alignItems: 'center',
+  },
+
+  uranoContainer: {
+    position: 'absolute',
+    left: '86%',
+    top: '20%',
+    alignItems: 'center',
+  },
+
+  netunoContainer: {
+    position: 'absolute',
+    right: -10, // Encostado na borda direita
+    top: '55%',
+    alignItems: 'center',
+  },
+
+  // TAMANHOS ORIGINAIS DOS PLANETAS PRESERVADOS
+  planetaPequeno: {
+    width: 50,
+    height: 50,
+  },
+
+  planetaMedio: {
+    width: 66,
+    height: 66,
+  },
+
+  planetaGrande: {
+    width: 95,
+    height: 95,
+  },
+
+  saturno: {
+    width: 130,
+    height: 95,
   },
 });
