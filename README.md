@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.png" alt="Logo Cecília nas Estrelas" width="220">
+  <img src="assets/images/ceciliainicio.png" alt="Cecília nas Estrelas" width="220">
 </p>
 
 <h1 align="center">✨ Cecília nas Estrelas ✨</h1>
