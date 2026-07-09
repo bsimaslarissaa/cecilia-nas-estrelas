@@ -23,73 +23,115 @@ No centro desse universo está Cecília, uma capivarinha curiosa e apaixonada pe
 ## Objetivos
 
 Incentivar a curiosidade científica.
+
 Aproximar crianças da Astronomia e das Ciências da Terra.
+
 Promover a alfabetização científica.
+
 Tornar o aprendizado mais lúdico e interativo.
+
 Unir ciência, imaginação e tecnologia.
 
 ## Funcionalidades
 
 Login
+
 Cadastro
+
 Entrar como visitante
+
 Sistema Solar
+
 Progresso do aluno
+
 Quiz
+
 Medalhas
+
 Ranking
+
 Painel do professor
+
 Salvamento de progresso
+
 Personalização
+
 IA da Cecília
 
 ## Funcionalidades futuras
 
 Trilhas de aprendizagem
+
 Biblioteca Cósmica
+
 Observatório Virtual
+
 Diário de Bordo
+
 Histórias interativas
+
 Gamificação avançada
 
 ## Personagens
 
 Cecília
+
 Cosmo
+
 Melinda
+
 Aurora
+
 Luna
+
 Tito
+
 Téo
+
 Henrique
+
 Carmem
+
 Lucas
+
 Nuri
 
 ## Tecnologias
 
-Atualmente
+Atualmente:
 
 React Native
+
 Expo
+
 TypeScript
+
 Expo Router
+
 Git
+
 GitHub
 
-Planejadas
+Planejadas:
 
 Firebase
+
 Firestore
+
 APIs de Astronomia
+
 Inteligência Artificial
 
 ## Estrutura do projeto
 
 app/
+
 assets/
+
 components/
+
 constants/
+
 hooks/
 
 ## Como executar
@@ -115,19 +157,29 @@ Aprender significa observar. Perguntar. Experimentar. Compartilhar. E descobrir 
 ## Roadmap
 
 Identidade visual
+
 Tela Inicial
+
 Tela de Boas-vindas
+
 Sistema Solar
+
 Missões
+
 Quiz
+
 Ranking
+
 Medalhas
+
 IA da Cecília
 
 ## Equipe
 
 Joanne Garcia Azevedo
+
 Larissa Barbosa Simas
+
 Maria Regina Garcia Duarte
 
 ## Licença
