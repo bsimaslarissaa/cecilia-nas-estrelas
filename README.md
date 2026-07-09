@@ -1,10 +1,16 @@
-# Cecília nas Estrelas 
+<p align="center">
+  <img src="docs/logo.png" alt="Logo Cecília nas Estrelas" width="220">
+</p>
 
-<p align="center"> <img src="assets/images/ceciliainicio.png" width="250"> </p>
+<h1 align="center">✨ Cecília nas Estrelas ✨</h1>
 
-Uma plataforma educacional interativa que aproxima crianças e jovens da ciência por meio da Astronomia, da curiosidade, da narrativa e da imaginação.
+<p align="center">
+  Uma plataforma educacional interativa que aproxima crianças e jovens da ciência por meio da Astronomia, da curiosidade, da narrativa e da imaginação.
+</p>
 
-Status: Em desenvolvimento
+<p align="center">
+   Em desenvolvimento • React Native • Expo • TypeScript
+</p>
 
 ## Sobre o projeto
 
