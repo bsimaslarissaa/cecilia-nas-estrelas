@@ -1,6 +1,6 @@
 # Cecília nas Estrelas 
 
-<p align="center"> <img src="assets/images/logo-cecilia.png" width="250"> </p>
+<p align="center"> <img src="assets/images/ceciliainicio.png" width="250"> </p>
 
 Uma plataforma educacional interativa que aproxima crianças e jovens da ciência por meio da Astronomia, da curiosidade, da narrativa e da imaginação.
 
