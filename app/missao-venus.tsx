@@ -1,5 +1,7 @@
 import MissaoDialogo from '@/components/MissaoDialogo';
 
+type LadoPersonagem = 'esquerda' | 'direita';
+
 const imagemFundo = require('@/assets/images/nave-venus.png');
 
 const AVATARES: Record<string, Record<string, any>> = {
@@ -19,7 +21,12 @@ const AVATARES: Record<string, Record<string, any>> = {
   },
 };
 
-const DIALOGOS = [
+const DIALOGOS: {
+  nome: string;
+  lado: LadoPersonagem;
+  expressao: string;
+  texto: string;
+}[] = [
   {
     nome: 'Cosmo',
     lado: 'direita',
