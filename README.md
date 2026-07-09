@@ -92,6 +92,57 @@ components/
 constants/
 hooks/
 
+## Como executar
+
+Clone o projeto: git clone https://github.com/SEU-USUARIO/cecilia-nas-estrelas.git
+
+Entre na pasta: cd cecilia-nas-estrelas
+
+Instale as dependências: npm install
+
+Execute: npx expo start
+
+## Telas
+
+Em breve serão adicionadas imagens do aplicativo.
+
+## Filosofia
+
+Aprender nunca significa apenas encontrar respostas.
+
+Aprender significa observar. Perguntar. Experimentar. Compartilhar. E descobrir que o Universo sempre guarda uma nova pergunta esperando por nós
+
+## Roadmap
+
+Identidade visual
+Tela Inicial
+Tela de Boas-vindas
+Sistema Solar
+Missões
+Quiz
+Ranking
+Medalhas
+IA da Cecília
+
+## Equipe
+
+Joanne Garcia Azevedo
+Larissa Barbosa Simas
+Maria Regina Garcia Duarte
+
+## Licença
+
+Projeto acadêmico e autoral.
+
+Os personagens, textos, universo narrativo e demais elementos são protegidos por direitos autorais.
+
+<p align="center">
+
+"Se este projeto fez você olhar para o céu com um pouco mais de curiosidade, então a missão da Cecília já começou."
+
+</p>
+
+
 
 
 
