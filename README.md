@@ -1,50 +1,92 @@
-# Cecília nas Estelas 
+# Cecília nas Estrelas 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center"> <img src="assets/images/logo-cecilia.png" width="250"> </p>
 
-## Get started
+Uma plataforma educacional interativa que aproxima crianças e jovens da ciência por meio da Astronomia, da curiosidade, da narrativa e da imaginação.
 
-1. Install dependencies
+Status: Em desenvolvimento
 
-   ```bash
-   npm install
-   ```
+## Sobre o projeto
 
-2. Start the app
+O Cecília nas Estrelas nasceu com a proposta de transformar o aprendizado científico em uma experiência acolhedora, divertida e investigativa.
 
-   ```bash
-   npx expo start
-   ```
+Mais do que ensinar Astronomia, a plataforma busca despertar a curiosidade, incentivar a observação e promover a alfabetização científica por meio de histórias, desafios, gamificação e experiências interativas.
 
-In the output, you'll find options to open the app in a
+No centro desse universo está Cecília, uma capivarinha curiosa e apaixonada pelo céu, acompanhada por seus amigos, que transformam cada descoberta em uma nova aventura.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Objetivos
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Incentivar a curiosidade científica.
+Aproximar crianças da Astronomia e das Ciências da Terra.
+Promover a alfabetização científica.
+Tornar o aprendizado mais lúdico e interativo.
+Unir ciência, imaginação e tecnologia.
 
-## Get a fresh project
+## Funcionalidades
 
-When you're ready, run:
+Login
+Cadastro
+Entrar como visitante
+Sistema Solar
+Progresso do aluno
+Quiz
+Medalhas
+Ranking
+Painel do professor
+Salvamento de progresso
+Personalização
+IA da Cecília
 
-```bash
-npm run reset-project
-```
+## Funcionalidades futuras
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Trilhas de aprendizagem
+Biblioteca Cósmica
+Observatório Virtual
+Diário de Bordo
+Histórias interativas
+Gamificação avançada
 
-## Learn more
+## Personagens
 
-To learn more about developing your project with Expo, look at the following resources:
+Cecília
+Cosmo
+Melinda
+Aurora
+Luna
+Tito
+Téo
+Henrique
+Carmem
+Lucas
+Nuri
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Tecnologias
 
-## Join the community
+Atualmente
 
-Join our community of developers creating universal apps.
+React Native
+Expo
+TypeScript
+Expo Router
+Git
+GitHub
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Planejadas
+
+Firebase
+Firestore
+APIs de Astronomia
+Inteligência Artificial
+
+## Estrutura do projeto
+
+app/
+assets/
+components/
+constants/
+hooks/
+
+
+
+
+
