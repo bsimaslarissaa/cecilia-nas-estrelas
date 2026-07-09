@@ -100,6 +100,7 @@ Nuri
 
 Atualmente:
 
+
 React Native
 
 Expo
@@ -112,7 +113,9 @@ Git
 
 GitHub
 
+
 Planejadas:
+
 
 Firebase
 
