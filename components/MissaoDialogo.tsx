@@ -24,12 +24,10 @@ type Props = {
   imagemFundo: ImageSourcePropType;
   avatares: Record<string, Record<string, any>>;
   dialogos: Fala[];
+  aoFinalizar?: () => void;
 };
 
-/*
-  Valores positivos fazem o personagem descer
-  e se aproximar da caixa de diálogo.
-*/
+
 const AJUSTE_VERTICAL: Record<string, number> = {
   Cecília: 0,
   Cosmo: 15,
@@ -47,6 +45,7 @@ export default function MissaoDialogo({
   imagemFundo,
   avatares,
   dialogos,
+  aoFinalizar,
 }: Props) {
   const [indiceFala, setIndiceFala] = useState(0);
 
@@ -80,12 +79,16 @@ export default function MissaoDialogo({
   }, [indiceFala, animacaoOpacidade, animacaoPulo]);
 
   const avancarDialogo = () => {
-    if (indiceFala < dialogos.length - 1) {
-      setIndiceFala(indiceFala + 1);
+  if (indiceFala < dialogos.length - 1) {
+    setIndiceFala(indiceFala + 1);
+  } else {
+    if (aoFinalizar) {
+      aoFinalizar();
     } else {
       router.back();
     }
-  };
+  }
+};
 
   const personagemAnimado = (
     <Animated.View
