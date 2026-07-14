@@ -1,4 +1,10 @@
+import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDialogo from '@/components/MissaoDialogo';
+import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+
+type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -6,39 +12,30 @@ const AVATARES: Record<string, Record<string, any>> = {
     pensativa: require('@/assets/images/cecifeliz.png'),
     feliz: require('@/assets/images/cecialegrecuriosa.png'),
   },
+
   Cosmo: {
     falando: require('@/assets/images/cosmo.png'),
   },
+
   Tito: {
     falando: require('@/assets/images/tito.png'),
   },
+
   Luna: {
     falando: require('@/assets/images/luna.png'),
   },
+
   Enrique: {
     falando: require('@/assets/images/enrique.png'),
   },
 };
 
-const DIALOGOS = [
-  {
-    nome: 'Cosmo',
-    lado: 'direita',
-    expressao: 'falando',
-    texto: 'Bip! Rota confirmada!',
-  },
-  {
-    nome: 'Cecília',
-    lado: 'esquerda',
-    expressao: 'curiosa',
-    texto: 'Nossa! Que planetinha pequeno! Será que ele guarda grandes aventuras?',
-  },
-  {
-    nome: 'Cosmo',
-    lado: 'direita',
-    expressao: 'falando',
-    texto: 'Vamos descobrir!',
-  },
+const DIALOGOS: {
+  nome: string;
+  lado: 'esquerda' | 'direita';
+  expressao: string;
+  texto: string;
+}[] = [
   {
     nome: 'Cecília',
     lado: 'esquerda',
@@ -61,7 +58,8 @@ const DIALOGOS = [
     nome: 'Cosmo',
     lado: 'direita',
     expressao: 'falando',
-    texto: 'Não exatamente. Mas ele gira ao redor do Sol muito mais rápido do que a Terra.',
+    texto:
+      'Não exatamente. Mas ele gira ao redor do Sol muito mais rápido do que a Terra.',
   },
   {
     nome: 'Cecília',
@@ -79,13 +77,15 @@ const DIALOGOS = [
     nome: 'Tito',
     lado: 'direita',
     expressao: 'falando',
-    texto: 'Cada planeta tem sua própria personalidade. Mercúrio é pequeno, veloz e guarda muitos segredos sobre a formação do Sistema Solar.',
+    texto:
+      'Cada planeta tem sua própria personalidade. Mercúrio é pequeno, veloz e guarda muitos segredos sobre a formação do Sistema Solar.',
   },
   {
     nome: 'Luna',
     lado: 'direita',
     expressao: 'falando',
-    texto: 'Eu queria passear por lá... mas acho que levaria roupa para todas as estações do ano no mesmo dia!',
+    texto:
+      'Eu queria passear por lá... mas acho que levaria roupa para todas as estações do ano no mesmo dia!',
   },
   {
     nome: 'Cecília',
@@ -97,13 +97,15 @@ const DIALOGOS = [
     nome: 'Luna',
     lado: 'direita',
     expressao: 'falando',
-    texto: 'Porque durante o dia faz um calor enorme, mas durante a noite faz um frio congelante!',
+    texto:
+      'Porque durante o dia faz um calor enorme, mas durante a noite faz um frio congelante!',
   },
   {
     nome: 'Enrique',
     lado: 'direita',
     expressao: 'falando',
-    texto: 'Fiz uma continha! Um ano em Mercúrio dura apenas 88 dias terrestres. Se morássemos lá, comemoraríamos aniversário muito mais vezes!',
+    texto:
+      'Fiz uma continha! Um ano em Mercúrio dura apenas 88 dias terrestres. Se morássemos lá, comemoraríamos aniversário muito mais vezes!',
   },
   {
     nome: 'Cecília',
@@ -115,16 +117,70 @@ const DIALOGOS = [
     nome: 'Cosmo',
     lado: 'direita',
     expressao: 'falando',
-    texto: 'Informação parcialmente correta. O número de aniversários aumentaria, mas o número de bolos dependeria dos cozinheiros da nave.',
+    texto:
+      'Informação parcialmente correta. O número de aniversários aumentaria, mas o número de bolos dependeria dos cozinheiros da nave.',
   },
 ];
 
 export default function MissaoMercurioScreen() {
+  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+
+  const concluirAtividade = () => {
+    setEtapa('distintivo');
+  };
+
+  const voltarAoSistemaSolar = () => {
+    router.replace('/solar-system' as any);
+  };
+
+  if (etapa === 'dialogo') {
+    return (
+      <MissaoDialogo
+        imagemFundo={require('@/assets/images/nave-mercurio.jpeg')}
+        avatares={AVATARES}
+        dialogos={DIALOGOS}
+        aoFinalizar={() => setEtapa('atividade')}
+      />
+    );
+  }
+
+  if (etapa === 'atividade') {
+    return (
+      <MissaoAtividade
+        imagemFundo={require('@/assets/images/nave-mercurio.jpeg')}
+        imagemDistintivo={require('@/assets/images/distintivo-mercurio.png')}
+        imagemPersonagem={require('@/assets/images/enrique.png')}
+        cabecalho="DESAFIO DO ENRIQUE"
+        titulo="Explorador Veloz"
+        descricao="Hora do Desafio Matemático do Enrique!"
+        pergunta="Se um ano em Mercúrio dura 88 dias terrestres, aproximadamente quantos aniversários você comemoraria lá durante um ano na Terra?"
+        dica="Um ano terrestre possui aproximadamente 365 dias. Faça 365 ÷ 88."
+        opcoes={[
+          '2 aniversários',
+          '4 aniversários',
+          '8 aniversários',
+          '12 aniversários',
+        ]}
+        indiceRespostaCorreta={1}
+        explicacaoResposta="Muito bem! 365 dividido por 88 é aproximadamente 4. Portanto, durante um ano na Terra, você comemoraria cerca de 4 aniversários em Mercúrio!"
+        aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
   return (
-    <MissaoDialogo
+    <MissaoDistintivo
       imagemFundo={require('@/assets/images/nave-mercurio.jpeg')}
-      avatares={AVATARES}
-      dialogos={DIALOGOS}
+      imagemDistintivo={require('@/assets/images/distintivo-mercurio.png')}
+      titulo="Explorador Veloz"
+      mensagem={`Parabéns!
+
+Você conheceu o menor planeta do Sistema Solar e resolveu o Desafio Matemático do Enrique.
+
+Agora você sabe que um ano em Mercúrio dura apenas 88 dias terrestres.
+
+Continue sua viagem! Ainda há muitos mundos esperando por você.`}
+      aoContinuar={voltarAoSistemaSolar}
     />
   );
 }

@@ -112,8 +112,9 @@ export default function MissaoSolScreen() {
     return (
       <MissaoAtividade
         imagemFundo={require('@/assets/images/nave-sol.jpeg')}
-        imagemAtividade={require('@/assets/images/sol.png')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
         imagemDistintivo={require('@/assets/images/distintivo-sol.png')}
+        cabecalho="DESAFIO DA CECÍLIA"
         titulo="Guardião da Luz"
         descricao="Mostre o que você aprendeu sobre a estrela mais importante do nosso Sistema Solar."
         pergunta="Por que o Sol é importante para a vida na Terra?"

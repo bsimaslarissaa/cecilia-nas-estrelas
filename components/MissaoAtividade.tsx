@@ -11,11 +11,14 @@ import {
 
 type Props = {
   imagemFundo: any;
-  imagemAtividade: any;
+  imagemAtividade?: any;
   imagemDistintivo: any;
+  imagemPersonagem?: any;
+  cabecalho?: string;
   titulo: string;
   descricao: string;
   pergunta: string;
+  dica?: string;
   opcoes: string[];
   indiceRespostaCorreta: number;
   explicacaoResposta?: string;
@@ -26,9 +29,12 @@ export default function MissaoAtividade({
   imagemFundo,
   imagemAtividade,
   imagemDistintivo,
+  imagemPersonagem,
+  cabecalho = 'MISSÃO DA CECÍLIA',
   titulo,
   descricao,
   pergunta,
+  dica,
   opcoes,
   indiceRespostaCorreta,
   explicacaoResposta = 'Muito bem! Você encontrou a resposta correta.',
@@ -75,19 +81,35 @@ export default function MissaoAtividade({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.card}>
+          {imagemPersonagem && (
+            <Image
+              source={imagemPersonagem}
+              style={styles.imagemPersonagem}
+              resizeMode="contain"
+            />
+          )}
+
+        {imagemAtividade && (
           <Image
             source={imagemAtividade}
             style={styles.imagemAtividade}
             resizeMode="contain"
           />
+        )}
 
-          <Text style={styles.selo}>MISSÃO DA CECÍLIA</Text>
+          <Text style={styles.selo}>{cabecalho}</Text>
 
           <Text style={styles.titulo}>{titulo}</Text>
 
           <Text style={styles.descricao}>{descricao}</Text>
 
           <Text style={styles.pergunta}>{pergunta}</Text>
+
+          {dica && (
+            <View style={styles.dicaContainer}>
+              <Text style={styles.dicaTexto}>{dica}</Text>
+            </View>
+          )}
 
           <View style={styles.opcoesContainer}>
             {opcoes.map((opcao, indice) => {
@@ -204,9 +226,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  imagemPersonagem: {
+    width: 110,
+    height: 130,
+    marginBottom: 4,
+  },
+
   imagemAtividade: {
-    width: 80,
-    height: 80,
+    width: 78,
+    height: 78,
     marginBottom: 8,
   },
 
@@ -241,7 +269,26 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 12,
+  },
+
+  dicaContainer: {
+    width: '100%',
+    backgroundColor: 'rgba(255, 216, 107, 0.12)',
+    borderWidth: 1,
+    borderColor: '#FFD86B',
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
     marginBottom: 16,
+  },
+
+  dicaTexto: {
+    color: '#FFF2B9',
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+    fontWeight: '600',
   },
 
   opcoesContainer: {
