@@ -2,43 +2,66 @@ import React, { useState } from 'react';
 import {
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 
 type Props = {
   imagemFundo: any;
+  imagemAtividade: any;
+  imagemDistintivo: any;
   titulo: string;
   descricao: string;
   pergunta: string;
-  placeholder?: string;
-  aoConcluir: (resposta: string) => void;
+  opcoes: string[];
+  indiceRespostaCorreta: number;
+  explicacaoResposta?: string;
+  aoConcluir: () => void;
 };
 
 export default function MissaoAtividade({
   imagemFundo,
+  imagemAtividade,
+  imagemDistintivo,
   titulo,
   descricao,
   pergunta,
-  placeholder = 'Digite sua resposta aqui...',
+  opcoes,
+  indiceRespostaCorreta,
+  explicacaoResposta = 'Muito bem! Você encontrou a resposta correta.',
   aoConcluir,
 }: Props) {
-  const [resposta, setResposta] = useState('');
+  const [opcaoSelecionada, setOpcaoSelecionada] =
+    useState<number | null>(null);
 
-  const respostaValida = resposta.trim().length >= 10;
+  const [mensagem, setMensagem] = useState('');
+  const [acertou, setAcertou] = useState(false);
 
-  const concluirAtividade = () => {
-    if (!respostaValida) {
+  const selecionarOpcao = (indice: number) => {
+    setOpcaoSelecionada(indice);
+    setMensagem('');
+    setAcertou(false);
+  };
+
+  const verificarResposta = () => {
+    if (opcaoSelecionada === null) {
+      setMensagem('Escolha uma alternativa antes de continuar.');
       return;
     }
 
-    aoConcluir(resposta.trim());
+    if (opcaoSelecionada === indiceRespostaCorreta) {
+      setAcertou(true);
+      setMensagem(explicacaoResposta);
+      return;
+    }
+
+    setAcertou(false);
+    setMensagem(
+      'Quase! Essa não é a resposta correta. Tente novamente. '
+    );
   };
 
   return (
@@ -47,68 +70,108 @@ export default function MissaoAtividade({
       style={styles.background}
       resizeMode="cover"
     >
-      <KeyboardAvoidingView
-        style={styles.keyboardArea}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={styles.card}>
-            <Image
-              source={require('@/assets/images/sol.png')}
-              style={styles.iconeImagem}
-              resizeMode="contain"
-            />
+        <View style={styles.card}>
+          <Image
+            source={imagemAtividade}
+            style={styles.imagemAtividade}
+            resizeMode="contain"
+          />
 
-            <Text style={styles.selo}>MISSÃO DA CECÍLIA</Text>
+          <Text style={styles.selo}>MISSÃO DA CECÍLIA</Text>
 
-            <Text style={styles.titulo}>{titulo}</Text>
+          <Text style={styles.titulo}>{titulo}</Text>
 
-            <Text style={styles.descricao}>{descricao}</Text>
+          <Text style={styles.descricao}>{descricao}</Text>
 
-            <View style={styles.perguntaContainer}>
-              <Text style={styles.pergunta}>{pergunta}</Text>
+          <Text style={styles.pergunta}>{pergunta}</Text>
 
-              <TextInput
-                style={styles.campoResposta}
-                placeholder={placeholder}
-                placeholderTextColor="#9691B5"
-                value={resposta}
-                onChangeText={setResposta}
-                multiline
-                maxLength={300}
-                textAlignVertical="top"
-                returnKeyType="default"
-              />
+          <View style={styles.opcoesContainer}>
+            {opcoes.map((opcao, indice) => {
+              const selecionada = opcaoSelecionada === indice;
 
-              <Text style={styles.contador}>
-                {resposta.length}/300
-              </Text>
-            </View>
+              return (
+                <Pressable
+                  key={`${opcao}-${indice}`}
+                  style={[
+                    styles.opcao,
+                    selecionada && styles.opcaoSelecionada,
+                  ]}
+                  onPress={() => selecionarOpcao(indice)}
+                >
+                  <View
+                    style={[
+                      styles.marcador,
+                      selecionada && styles.marcadorSelecionado,
+                    ]}
+                  />
 
-            {!respostaValida && resposta.length > 0 && (
-              <Text style={styles.aviso}>
-                Escreva um pouco mais para concluir a missão.
-              </Text>
-            )}
+                  <Text
+                    style={[
+                      styles.textoOpcao,
+                      selecionada && styles.textoOpcaoSelecionada,
+                    ]}
+                  >
+                    {opcao}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
 
-            <Pressable
+          {mensagem !== '' && (
+            <Text
               style={[
-                styles.botao,
-                !respostaValida && styles.botaoDesativado,
+                styles.mensagem,
+                acertou
+                  ? styles.mensagemCorreta
+                  : styles.mensagemErro,
               ]}
-              onPress={concluirAtividade}
-              disabled={!respostaValida}
+            >
+              {mensagem}
+            </Text>
+          )}
+
+          {!acertou ? (
+            <Pressable
+              style={styles.botao}
+              onPress={verificarResposta}
             >
               <Text style={styles.textoBotao}>
-                Concluir missão
+                Verificar resposta
               </Text>
             </Pressable>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          ) : (
+            <View style={styles.recompensaContainer}>
+              <Text style={styles.textoConquista}>
+                Você desbloqueou um novo distintivo!
+              </Text>
+
+              <Image
+                source={imagemDistintivo}
+                style={styles.imagemRecompensa}
+                resizeMode="contain"
+              />
+
+              <Text style={styles.nomeDistintivo}>
+                {titulo}
+              </Text>
+
+              <Pressable
+                style={[styles.botao, styles.botaoConcluir]}
+                onPress={aoConcluir}
+              >
+                <Text style={styles.textoBotao}>
+                  Receber distintivo
+                </Text>
+              </Pressable>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
@@ -120,23 +183,19 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 
-  keyboardArea: {
-    flex: 1,
-  },
-
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 24,
-    backgroundColor: 'rgba(3, 4, 20, 0.45)',
+    paddingVertical: 28,
+    backgroundColor: 'rgba(3, 4, 20, 0.5)',
   },
 
   card: {
     width: '100%',
     maxWidth: 720,
-    backgroundColor: 'rgba(15, 18, 36, 0.96)',
+    backgroundColor: 'rgba(15, 18, 36, 0.97)',
     borderWidth: 2,
     borderColor: '#8A6CFF',
     borderRadius: 24,
@@ -145,10 +204,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  iconeImagem: {
-  width: 72,
-  height: 72,
-  marginBottom: 8,
+  imagemAtividade: {
+    width: 80,
+    height: 80,
+    marginBottom: 8,
   },
 
   selo: {
@@ -173,46 +232,109 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     textAlign: 'center',
     marginTop: 10,
-    marginBottom: 18,
-  },
-
-  perguntaContainer: {
-    width: '100%',
+    marginBottom: 16,
   },
 
   pergunta: {
     color: '#FFD86B',
-    fontSize: 17,
-    lineHeight: 24,
+    fontSize: 18,
+    lineHeight: 25,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
 
-  campoResposta: {
+  opcoesContainer: {
     width: '100%',
-    minHeight: 110,
-    backgroundColor: '#FFFFFF',
+    gap: 10,
+  },
+
+  opcao: {
+    width: '100%',
+    minHeight: 54,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#25213F',
+    borderWidth: 2,
+    borderColor: '#504A70',
     borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    color: '#17142C',
-    fontSize: 16,
-    lineHeight: 22,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
   },
 
-  contador: {
-    color: '#A7A1C5',
-    fontSize: 11,
-    textAlign: 'right',
-    marginTop: 5,
+  opcaoSelecionada: {
+    borderColor: '#8A6CFF',
+    backgroundColor: '#352B61',
   },
 
-  aviso: {
-    color: '#FFBE6B',
-    fontSize: 12,
+  marcador: {
+    width: 19,
+    height: 19,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#B8B1D5',
+    marginRight: 12,
+  },
+
+  marcadorSelecionado: {
+    borderWidth: 5,
+    borderColor: '#B78DFF',
+    backgroundColor: '#FFFFFF',
+  },
+
+  textoOpcao: {
+    flex: 1,
+    color: '#E8E6F4',
+    fontSize: 15,
+    lineHeight: 21,
+  },
+
+  textoOpcaoSelecionada: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+
+  mensagem: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 6,
+    marginTop: 15,
+  },
+
+  mensagemCorreta: {
+    color: '#83F5A5',
+  },
+
+  mensagemErro: {
+    color: '#FFBE6B',
+  },
+
+  recompensaContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 18,
+  },
+
+  textoConquista: {
+    color: '#FFD86B',
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+
+  imagemRecompensa: {
+    width: 180,
+    height: 180,
+  },
+
+  nomeDistintivo: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 8,
   },
 
   botao: {
@@ -234,11 +356,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-  botaoDesativado: {
-    backgroundColor: '#4A4660',
-    opacity: 0.65,
-    shadowOpacity: 0,
-    elevation: 0,
+  botaoConcluir: {
+    backgroundColor: '#3C8E5A',
   },
 
   textoBotao: {

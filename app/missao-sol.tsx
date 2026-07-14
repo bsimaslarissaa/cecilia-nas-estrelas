@@ -88,10 +88,8 @@ const DIALOGOS: {
 
 export default function MissaoSolScreen() {
   const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
-  const [resposta, setResposta] = useState('');
 
-  const concluirAtividade = (respostaDaCrianca: string) => {
-    setResposta(respostaDaCrianca);
+  const concluirAtividade = () => {
     setEtapa('distintivo');
   };
 
@@ -114,10 +112,19 @@ export default function MissaoSolScreen() {
     return (
       <MissaoAtividade
         imagemFundo={require('@/assets/images/nave-sol.jpeg')}
+        imagemAtividade={require('@/assets/images/sol.png')}
+        imagemDistintivo={require('@/assets/images/distintivo-sol.png')}
         titulo="Guardião da Luz"
-        descricao="Agora é a sua vez de mostrar o que aprendeu sobre o Sol."
+        descricao="Mostre o que você aprendeu sobre a estrela mais importante do nosso Sistema Solar."
         pergunta="Por que o Sol é importante para a vida na Terra?"
-        placeholder="Escreva sua resposta aqui..."
+        opcoes={[
+          'Porque fornece luz e calor e ajuda a tornar a vida possível.',
+          'Porque é um planeta que produz água para a Terra.',
+          'Porque impede que a Terra faça movimentos no espaço.',
+          'Porque é o satélite natural mais próximo da Terra.',
+        ]}
+        indiceRespostaCorreta={0}
+        explicacaoResposta="Muito bem! O Sol fornece luz e calor para a Terra e torna a vida possível."
         aoConcluir={concluirAtividade}
       />
     );
@@ -128,10 +135,9 @@ export default function MissaoSolScreen() {
       imagemFundo={require('@/assets/images/nave-sol.jpeg')}
       imagemDistintivo={require('@/assets/images/distintivo-sol.png')}
       titulo="Guardião da Luz"
-      mensagem={`Você concluiu sua primeira missão espacial!
+      mensagem={`Parabéns!
 
-Sua resposta foi:
-“${resposta}”
+Você concluiu sua primeira missão espacial e descobriu por que o Sol é tão importante para a vida na Terra.
 
 Continue explorando! Ainda existem muitos lugares incríveis esperando por você.`}
       aoContinuar={voltarAoSistemaSolar}
