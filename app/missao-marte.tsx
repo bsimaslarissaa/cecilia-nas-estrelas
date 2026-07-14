@@ -1,4 +1,10 @@
+import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDialogo from '@/components/MissaoDialogo';
+import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+
+type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -32,14 +38,12 @@ const DIALOGOS: {
     expressao: 'falando',
     texto: 'Bip! Estamos entrando na órbita de Marte.',
   },
-
   {
     nome: 'Cecília',
     lado: 'esquerda',
-    expressao: 'curiosa',
+    expressao: 'alegre',
     texto: 'Ele realmente é vermelho!',
   },
-
   {
     nome: 'Luna',
     lado: 'direita',
@@ -47,7 +51,6 @@ const DIALOGOS: {
     texto:
       'Essa cor vem de um mineral chamado óxido de ferro, parecido com a ferrugem que aparece em alguns metais.',
   },
-
   {
     nome: 'Nuri',
     lado: 'direita',
@@ -55,14 +58,12 @@ const DIALOGOS: {
     texto:
       'Foi justamente essa cor que fez muitas pessoas imaginarem histórias sobre Marte durante milhares de anos.',
   },
-
   {
     nome: 'Cecília',
     lado: 'esquerda',
     expressao: 'curiosa',
     texto: 'Você mora aqui?',
   },
-
   {
     nome: 'Nuri',
     lado: 'direita',
@@ -70,14 +71,12 @@ const DIALOGOS: {
     texto:
       '(ri) Não! O Universo é muito maior do que isso. Eu também adoro descobrir planetas novos.',
   },
-
   {
     nome: 'Luna',
     lado: 'direita',
     expressao: 'explicando',
     texto: 'Então você também está aprendendo?',
   },
-
   {
     nome: 'Nuri',
     lado: 'direita',
@@ -85,7 +84,6 @@ const DIALOGOS: {
     texto:
       'Claro! Explorar o Universo significa nunca parar de fazer perguntas.',
   },
-
   {
     nome: 'Cosmo',
     lado: 'direita',
@@ -93,62 +91,94 @@ const DIALOGOS: {
     texto:
       'Perguntas registradas. Curiosidade detectada em nível máximo.',
   },
-
   {
     nome: 'Luna',
     lado: 'direita',
     expressao: 'explicando',
     texto:
-      'Marte é um dos planetas mais estudados pelos cientistas.',
+      'Marte é um dos planetas mais estudados pelos cientistas. Há muito tempo, ele possuía rios, lagos e talvez até oceanos.',
   },
-
   {
     nome: 'Luna',
     lado: 'direita',
     expressao: 'explicando',
     texto:
-      'Há muito tempo, ele possuía rios, lagos e talvez até oceanos. Hoje é um planeta frio e seco.',
+      'Hoje Marte é um planeta frio e seco, mas os cientistas continuam procurando sinais de que algum tipo de vida possa ter existido por lá.',
   },
-
-  {
-    nome: 'Luna',
-    lado: 'direita',
-    expressao: 'explicando',
-    texto:
-      'Mesmo assim, os cientistas continuam procurando sinais que possam mostrar se algum tipo de vida existiu por lá há bilhões de anos.',
-  },
-
-  {
-    nome: 'Luna',
-    lado: 'direita',
-    expressao: 'explicando',
-    texto:
-      'Cada nova descoberta ajuda a compreender melhor não apenas Marte, mas também a história da Terra.',
-  },
-
   {
     nome: 'Cecília',
     lado: 'esquerda',
-    expressao: 'alegre',
+    expressao: 'curiosa',
     texto:
-      'Então fazer perguntas também faz parte de ser uma exploradora espacial!',
+      'Então Marte ainda guarda muitas perguntas esperando por respostas!',
   },
-
   {
-    nome: 'Cosmo',
+    nome: 'Nuri',
     lado: 'direita',
-    expressao: 'falando',
+    expressao: 'explicando',
     texto:
-      'Confirmação registrada! Missão Marte concluída com sucesso!',
+      'Exatamente! Explorar também significa ter coragem para perguntar e descobrir.',
   },
 ];
 
 export default function MissaoMarteScreen() {
+  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+
+  const concluirAtividade = () => {
+    setEtapa('distintivo');
+  };
+
+  const voltarAoSistemaSolar = () => {
+    router.replace('/solar-system' as any);
+  };
+
+  if (etapa === 'dialogo') {
+    return (
+      <MissaoDialogo
+        imagemFundo={require('@/assets/images/nave-marte.png')}
+        avatares={AVATARES}
+        dialogos={DIALOGOS}
+        aoFinalizar={() => setEtapa('atividade')}
+      />
+    );
+  }
+
+  if (etapa === 'atividade') {
+    return (
+      <MissaoAtividade
+        imagemFundo={require('@/assets/images/nave-marte.png')}
+        imagemPersonagem={require('@/assets/images/luna.png')}
+        imagemDistintivo={require('@/assets/images/distintivo-marte.png')}
+        cabecalho="DESAFIO DA LUNA"
+        titulo="Explorador do Planeta Vermelho"
+        descricao="Luna preparou uma pergunta sobre a característica mais conhecida de Marte."
+        pergunta="Por que Marte é conhecido como Planeta Vermelho?"
+        opcoes={[
+          'Porque sua superfície possui óxido de ferro, semelhante à ferrugem.',
+          'Porque Marte recebe uma luz vermelha enviada pelo Sol.',
+          'Porque todo o planeta é coberto por lava quente.',
+          'Porque sua atmosfera é formada apenas por nuvens vermelhas.',
+        ]}
+        indiceRespostaCorreta={0}
+        explicacaoResposta="Muito bem! Marte parece vermelho porque sua superfície possui óxido de ferro, um mineral semelhante à ferrugem encontrada em alguns metais."
+        aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
   return (
-    <MissaoDialogo
+    <MissaoDistintivo
       imagemFundo={require('@/assets/images/nave-marte.png')}
-      avatares={AVATARES}
-      dialogos={DIALOGOS}
+      imagemDistintivo={require('@/assets/images/distintivo-marte.png')}
+      titulo="Explorador do Planeta Vermelho"
+      mensagem={`Parabéns!
+
+Você conheceu Marte e descobriu por que ele é chamado de Planeta Vermelho.
+
+Também aprendeu que fazer perguntas é uma parte muito importante da ciência.
+
+Continue sua jornada! O Universo ainda guarda muitos mistérios.`}
+      aoContinuar={voltarAoSistemaSolar}
     />
   );
 }
