@@ -1,11 +1,16 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
+import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
 import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
+type EtapaMissao =
+  | 'dialogo'
+  | 'atividade'
+  | 'desenho'
+  | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -123,9 +128,14 @@ const DIALOGOS: {
 ];
 
 export default function MissaoMarteScreen() {
-  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+  const [etapa, setEtapa] =
+    useState<EtapaMissao>('dialogo');
 
   const concluirAtividade = () => {
+    setEtapa('desenho');
+  };
+
+  const concluirDesenho = () => {
     setEtapa('distintivo');
   };
 
@@ -164,6 +174,19 @@ export default function MissaoMarteScreen() {
         indiceRespostaCorreta={0}
         explicacaoResposta="Muito bem! Marte parece vermelho porque sua superfície possui óxido de ferro, um mineral semelhante à ferrugem encontrada em alguns metais."
         aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
+  if (etapa === 'desenho') {
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/nave-marte.png')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Construa seu Robô Explorador"
+        instrucao="Imagine que você foi escolhido para criar um robô que viajará até Marte. Desenhe como ele seria e pense nas missões que ele realizaria para explorar o Planeta Vermelho."
+        aoConcluir={concluirDesenho}
+        aoPular={concluirDesenho}
       />
     );
   }

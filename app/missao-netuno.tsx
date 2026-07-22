@@ -193,7 +193,7 @@ export default function MissaoNetunoScreen() {
       <MissaoAtividade
         imagemFundo={require('@/assets/images/nave-netuno.jpeg')}
         imagemPersonagem={require('@/assets/images/melinda.png')}
-        imagemDistintivo={require('@/assets/images/distintivo-netuno.jpeg')}
+        imagemDistintivo={require('@/assets/images/distintivo-netuno.png')}
         cabecalho="LABORATÓRIO DA MELINDA"
         titulo="O Gigante dos Ventos"
         descricao="Melinda preparou um desafio sobre uma das características mais impressionantes de Netuno."
@@ -228,7 +228,7 @@ export default function MissaoNetunoScreen() {
   return (
     <MissaoDistintivo
       imagemFundo={require('@/assets/images/nave-netuno.jpeg')}
-      imagemDistintivo={require('@/assets/images/distintivo-netuno.jpeg')}
+      imagemDistintivo={require('@/assets/images/distintivo-netuno.png')}
       titulo="Explorador dos Grandes Ventos"
       mensagem={`Parabéns!
 

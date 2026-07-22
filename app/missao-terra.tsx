@@ -1,11 +1,16 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
+import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
 import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
+type EtapaMissao =
+  | 'dialogo'
+  | 'atividade'
+  | 'desenho'
+  | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -132,9 +137,14 @@ const DIALOGOS: {
 ];
 
 export default function MissaoTerraScreen() {
-  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+  const [etapa, setEtapa] =
+    useState<EtapaMissao>('dialogo');
 
   const concluirAtividade = () => {
+    setEtapa('desenho');
+  };
+
+  const concluirDesenho = () => {
     setEtapa('distintivo');
   };
 
@@ -173,6 +183,19 @@ export default function MissaoTerraScreen() {
         indiceRespostaCorreta={0}
         explicacaoResposta="Muito bem! A Terra é chamada de Planeta Azul porque cerca de 71% de sua superfície é coberta por água. Vista do espaço, os oceanos fazem nosso planeta parecer azul."
         aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
+  if (etapa === 'desenho') {
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/nave-terra.png')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Meu Lugar Favorito na Natureza"
+        instrucao="Desenhe o lugar da natureza de que você mais gosta. Pode ser uma praia, uma floresta, uma montanha, um rio, um jardim ou outro lugar especial da Terra."
+        aoConcluir={concluirDesenho}
+        aoPular={concluirDesenho}
       />
     );
   }

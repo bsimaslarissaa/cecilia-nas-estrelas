@@ -1,11 +1,16 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
+import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
 import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
+type EtapaMissao =
+  | 'dialogo'
+  | 'atividade'
+  | 'desenho'
+  | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -117,9 +122,14 @@ const DIALOGOS: {
 ];
 
 export default function MissaoVenusScreen() {
-  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+  const [etapa, setEtapa] =
+    useState<EtapaMissao>('dialogo');
 
   const concluirAtividade = () => {
+    setEtapa('desenho');
+  };
+
+  const concluirDesenho = () => {
     setEtapa('distintivo');
   };
 
@@ -159,6 +169,19 @@ export default function MissaoVenusScreen() {
         indiceRespostaCorreta={0}
         explicacaoResposta="Muito bem! Vênus leva cerca de 243 dias terrestres para girar sobre si mesmo, mas aproximadamente 225 dias para completar uma volta ao redor do Sol. Por isso, um dia em Vênus dura mais do que um ano!"
         aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
+  if (etapa === 'desenho') {
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/nave-venus.png')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Uma Aventura em Vênus"
+        instrucao="Imagine que sua nave conseguiu pousar em um lugar totalmente seguro em Vênus. Desenhe o que você encontraria: vulcões, nuvens gigantes, rochas diferentes ou qualquer outro mistério desse planeta."
+        aoConcluir={concluirDesenho}
+        aoPular={concluirDesenho}
       />
     );
   }

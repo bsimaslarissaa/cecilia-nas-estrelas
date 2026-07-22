@@ -1,11 +1,16 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
+import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
 import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
+type EtapaMissao =
+  | 'dialogo'
+  | 'atividade'
+  | 'desenho'
+  | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -13,15 +18,19 @@ const AVATARES: Record<string, Record<string, any>> = {
     feliz: require('@/assets/images/cecifeliz.png'),
     alegre: require('@/assets/images/cecialegrecuriosa.png'),
   },
+
   Cosmo: {
     falando: require('@/assets/images/cosmo.png'),
   },
+
   Tito: {
     explicando: require('@/assets/images/tito.png'),
   },
+
   Carmem: {
     explicando: require('@/assets/images/carmem.png'),
   },
+
   Aurora: {
     explicando: require('@/assets/images/aurora.png'),
   },
@@ -105,9 +114,14 @@ const DIALOGOS: {
 ];
 
 export default function MissaoJupiterScreen() {
-  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+  const [etapa, setEtapa] =
+    useState<EtapaMissao>('dialogo');
 
   const concluirAtividade = () => {
+    setEtapa('desenho');
+  };
+
+  const concluirDesenho = () => {
     setEtapa('distintivo');
   };
 
@@ -131,7 +145,7 @@ export default function MissaoJupiterScreen() {
     return (
       <MissaoAtividade
         imagemFundo={require('@/assets/images/nave-jupiter.jpeg')}
-        imagemPersonagem={require('@/assets/images/teo.png')}
+        imagemPersonagem={require('@/assets/images/tito.png')}
         imagemDistintivo={require('@/assets/images/distintivo-jupiter.png')}
         cabecalho="LABORATÓRIO DO TITO"
         titulo="O Gigante Gentil"
@@ -146,6 +160,19 @@ export default function MissaoJupiterScreen() {
         indiceRespostaCorreta={0}
         explicacaoResposta="Incrível! Júpiter é tão massivo que mais de mil planetas Terra caberiam inteiramente dentro do seu espaço gasoso."
         aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
+  if (etapa === 'desenho') {
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/nave-jupiter.jpeg')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Tempestades Gigantes"
+        instrucao="Desenhe a Grande Mancha Vermelha de Júpiter. Você também pode inventar uma tempestade espacial, criar um nome para ela e imaginar como seriam suas nuvens coloridas."
+        aoConcluir={concluirDesenho}
+        aoPular={concluirDesenho}
       />
     );
   }

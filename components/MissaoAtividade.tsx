@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -25,6 +25,11 @@ type Props = {
   aoConcluir: () => void;
 };
 
+type OpcaoEmbaralhada = {
+  texto: string;
+  correta: boolean;
+};
+
 export default function MissaoAtividade({
   imagemFundo,
   imagemAtividade,
@@ -40,6 +45,15 @@ export default function MissaoAtividade({
   explicacaoResposta = 'Muito bem! Você encontrou a resposta correta.',
   aoConcluir,
 }: Props) {
+  const opcoesEmbaralhadas = useMemo<OpcaoEmbaralhada[]>(() => {
+    const opcoesComResposta = opcoes.map((opcao, indice) => ({
+      texto: opcao,
+      correta: indice === indiceRespostaCorreta,
+    }));
+
+    return [...opcoesComResposta].sort(() => Math.random() - 0.5);
+  }, [opcoes, indiceRespostaCorreta]);
+
   const [opcaoSelecionada, setOpcaoSelecionada] =
     useState<number | null>(null);
 
@@ -58,7 +72,10 @@ export default function MissaoAtividade({
       return;
     }
 
-    if (opcaoSelecionada === indiceRespostaCorreta) {
+    const respostaSelecionada =
+      opcoesEmbaralhadas[opcaoSelecionada];
+
+    if (respostaSelecionada.correta) {
       setAcertou(true);
       setMensagem(explicacaoResposta);
       return;
@@ -66,7 +83,7 @@ export default function MissaoAtividade({
 
     setAcertou(false);
     setMensagem(
-      'Quase! Essa não é a resposta correta. Tente novamente. '
+      'Quase! Essa não é a resposta correta. Tente novamente.'
     );
   };
 
@@ -89,13 +106,13 @@ export default function MissaoAtividade({
             />
           )}
 
-        {imagemAtividade && (
-          <Image
-            source={imagemAtividade}
-            style={styles.imagemAtividade}
-            resizeMode="contain"
-          />
-        )}
+          {imagemAtividade && (
+            <Image
+              source={imagemAtividade}
+              style={styles.imagemAtividade}
+              resizeMode="contain"
+            />
+          )}
 
           <Text style={styles.selo}>{cabecalho}</Text>
 
@@ -112,12 +129,13 @@ export default function MissaoAtividade({
           )}
 
           <View style={styles.opcoesContainer}>
-            {opcoes.map((opcao, indice) => {
-              const selecionada = opcaoSelecionada === indice;
+            {opcoesEmbaralhadas.map((opcao, indice) => {
+              const selecionada =
+                opcaoSelecionada === indice;
 
               return (
                 <Pressable
-                  key={`${opcao}-${indice}`}
+                  key={`${opcao.texto}-${indice}`}
                   style={[
                     styles.opcao,
                     selecionada && styles.opcaoSelecionada,
@@ -127,17 +145,19 @@ export default function MissaoAtividade({
                   <View
                     style={[
                       styles.marcador,
-                      selecionada && styles.marcadorSelecionado,
+                      selecionada &&
+                        styles.marcadorSelecionado,
                     ]}
                   />
 
                   <Text
                     style={[
                       styles.textoOpcao,
-                      selecionada && styles.textoOpcaoSelecionada,
+                      selecionada &&
+                        styles.textoOpcaoSelecionada,
                     ]}
                   >
-                    {opcao}
+                    {opcao.texto}
                   </Text>
                 </Pressable>
               );

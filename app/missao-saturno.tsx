@@ -1,11 +1,16 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
+import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
 import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
+type EtapaMissao =
+  | 'dialogo'
+  | 'atividade'
+  | 'desenho'
+  | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -13,15 +18,19 @@ const AVATARES: Record<string, Record<string, any>> = {
     feliz: require('@/assets/images/cecifeliz.png'),
     alegre: require('@/assets/images/cecialegrecuriosa.png'),
   },
+
   Cosmo: {
     falando: require('@/assets/images/cosmo.png'),
   },
+
   Lucas: {
     falando: require('@/assets/images/lucas.png'),
   },
+
   Aurora: {
     explicando: require('@/assets/images/aurora.png'),
   },
+
   Nuri: {
     explicando: require('@/assets/images/nuri.png'),
   },
@@ -80,9 +89,14 @@ const DIALOGOS: {
 ];
 
 export default function MissaoSaturnoScreen() {
-  const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
+  const [etapa, setEtapa] =
+    useState<EtapaMissao>('dialogo');
 
   const concluirAtividade = () => {
+    setEtapa('desenho');
+  };
+
+  const concluirDesenho = () => {
     setEtapa('distintivo');
   };
 
@@ -116,11 +130,25 @@ export default function MissaoSaturnoScreen() {
           'Ele flutuaria na água, porque sua densidade é menor que a da água.',
           'Ele afundaria imediatamente, por ser muito grande.',
           'Ele derreteria e viraria fumaça vermelha.',
+          'Ele flutuaria na água, porque sua densidade é menor que a da água.',
           'Ele começaria a girar e jogaria água para fora do espaço.',
         ]}
         indiceRespostaCorreta={0}
         explicacaoResposta="Isso mesmo! Saturno é um gigante gasoso muito leve para o tamanho dele. Se existisse uma banheira gigante o suficiente, ele flutuaria na água porque sua densidade é menor que a da água!"
         aoConcluir={concluirAtividade}
+      />
+    );
+  }
+
+  if (etapa === 'desenho') {
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/saturno-nave.jpeg')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Construa os Anéis de Saturno"
+        instrucao="Escolha como deseja realizar esta missão: desenhe Saturno e seus anéis na tela ou construa seu próprio planeta usando papel, papelão, barbante, massinha, tampinhas ou outros materiais recicláveis. Quando terminar sua criação, toque em Concluir desenho para continuar."
+        aoConcluir={concluirDesenho}
+        aoPular={concluirDesenho}
       />
     );
   }
