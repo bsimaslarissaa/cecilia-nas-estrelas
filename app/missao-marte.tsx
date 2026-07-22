@@ -1,9 +1,9 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { planetasConcluidos } from '@/app/progresso';
 
 type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
 
@@ -129,13 +129,10 @@ export default function MissaoMarteScreen() {
     setEtapa('distintivo');
   };
 
-const voltarAoSistemaSolar = () => {
-    if (!planetasConcluidos.includes('marte')) {
-      planetasConcluidos.push('marte');
-    }
+  const voltarAoSistemaSolar = () => {
+    concluirPlaneta('marte');
     router.replace('/solar-system' as any);
   };
-
 
   if (etapa === 'dialogo') {
     return (

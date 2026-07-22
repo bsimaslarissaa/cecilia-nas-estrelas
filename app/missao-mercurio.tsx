@@ -1,11 +1,12 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
+import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { planetasConcluidos } from '@/app/progresso';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
+type EtapaMissao = 'dialogo' | 'atividade' | 'desenho' | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -127,13 +128,15 @@ export default function MissaoMercurioScreen() {
   const [etapa, setEtapa] = useState<EtapaMissao>('dialogo');
 
   const concluirAtividade = () => {
+    setEtapa('desenho');
+  };
+
+  const concluirDesenho = () => {
     setEtapa('distintivo');
   };
 
   const voltarAoSistemaSolar = () => {
-    if (!planetasConcluidos.includes('mercurio')) {
-      planetasConcluidos.push('mercurio');
-    }
+    concluirPlaneta('mercurio');
     router.replace('/solar-system' as any);
   };
 
@@ -172,6 +175,19 @@ export default function MissaoMercurioScreen() {
     );
   }
 
+  if (etapa === 'desenho') {
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/nave-mercurio.jpeg')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Corrida Espacial em Mercúrio"
+        instrucao="Imagine que você está caminhando em Mercúrio. Desenhe como seria explorar um planeta muito quente durante o dia e congelante durante a noite. Esta atividade é opcional."
+        aoConcluir={concluirDesenho}
+        aoPular={concluirDesenho}
+      />
+    );
+  }
+
   return (
     <MissaoDistintivo
       imagemFundo={require('@/assets/images/nave-mercurio.jpeg')}
@@ -181,7 +197,7 @@ export default function MissaoMercurioScreen() {
 
 Você conheceu o menor planeta do Sistema Solar e resolveu o Desafio Matemático do Enrique.
 
-Agora você sabe que um ano em Mercúrio dura apenas 88 dias terrestres.
+Agora você sabe que um ano em Mercúrio dura apenas 88 dias terrestres e que sua temperatura muda muito entre o dia e a noite.
 
 Continue sua viagem! Ainda há muitos mundos esperando por você.`}
       aoContinuar={voltarAoSistemaSolar}

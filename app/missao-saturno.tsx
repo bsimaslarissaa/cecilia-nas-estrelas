@@ -1,7 +1,7 @@
-import { planetasConcluidos } from '@/app/progresso';
 import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
@@ -55,7 +55,8 @@ const DIALOGOS: {
     nome: 'Aurora',
     lado: 'direita',
     expressao: 'explicando',
-    texto: 'Na verdade, são bilhões de pedacinhos de gelo, poeira e pequenas rochas.',
+    texto:
+      'Na verdade, são bilhões de pedacinhos de gelo, poeira e pequenas rochas.',
   },
   {
     nome: 'Nuri',
@@ -67,7 +68,8 @@ const DIALOGOS: {
     nome: 'Aurora',
     lado: 'direita',
     expressao: 'explicando',
-    texto: 'Não. Cada fragmento viaja ao redor de Saturno. Juntos, eles formam um espetáculo incrível.',
+    texto:
+      'Não. Cada fragmento viaja ao redor de Saturno. Juntos, eles formam um espetáculo incrível.',
   },
   {
     nome: 'Cosmo',
@@ -85,9 +87,7 @@ export default function MissaoSaturnoScreen() {
   };
 
   const voltarAoSistemaSolar = () => {
-    if (!planetasConcluidos.includes('saturno')) {
-      planetasConcluidos.push('saturno');
-    }
+    concluirPlaneta('saturno');
     router.replace('/solar-system' as any);
   };
 

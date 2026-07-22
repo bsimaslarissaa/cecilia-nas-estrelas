@@ -1,9 +1,9 @@
 import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { planetasConcluidos } from '@/app/progresso';
 
 type EtapaMissao = 'dialogo' | 'atividade' | 'distintivo';
 
@@ -101,16 +101,18 @@ const DIALOGOS: {
     texto: 'Recomendação aprovada.',
   },
   {
-  nome: 'Aurora',
-  lado: 'direita',
-  expressao: 'explicando',
-  texto: 'Antes de seguirmos viagem, tenho mais uma curiosidade! Em Vênus, um dia dura cerca de 243 dias terrestres, mas um ano dura aproximadamente 225 dias.',
+    nome: 'Aurora',
+    lado: 'direita',
+    expressao: 'explicando',
+    texto:
+      'Antes de seguirmos viagem, tenho mais uma curiosidade! Em Vênus, um dia dura cerca de 243 dias terrestres, mas um ano dura aproximadamente 225 dias.',
   },
   {
-  nome: 'Cecília',
-  lado: 'esquerda',
-  expressao: 'surpresa',
-  texto: 'Nossa! Então um dia em Vênus dura mais do que um ano! Agora entendi por que ele é um planeta tão diferente.',
+    nome: 'Cecília',
+    lado: 'esquerda',
+    expressao: 'surpresa',
+    texto:
+      'Nossa! Então um dia em Vênus dura mais do que um ano! Agora entendi por que ele é um planeta tão diferente.',
   },
 ];
 
@@ -122,9 +124,7 @@ export default function MissaoVenusScreen() {
   };
 
   const voltarAoSistemaSolar = () => {
-    if (!planetasConcluidos.includes('venus')) {
-      planetasConcluidos.push('venus');
-    }
+    concluirPlaneta('venus');
     router.replace('/solar-system' as any);
   };
 

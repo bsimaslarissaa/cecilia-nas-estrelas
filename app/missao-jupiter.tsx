@@ -1,7 +1,7 @@
-import { planetasConcluidos } from '@/app/progresso';
 import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
@@ -67,7 +67,8 @@ const DIALOGOS: {
     nome: 'Tito',
     lado: 'direita',
     expressao: 'explicando',
-    texto: 'Júpiter é o maior planeta do Sistema Solar. Mais de mil Terras caberiam dentro dele.',
+    texto:
+      'Júpiter é o maior planeta do Sistema Solar. Mais de mil Terras caberiam dentro dele.',
   },
   {
     nome: 'Carmem',
@@ -79,7 +80,8 @@ const DIALOGOS: {
     nome: 'Aurora',
     lado: 'direita',
     expressao: 'explicando',
-    texto: 'É mesmo. Sua gravidade é tão forte que influencia vários objetos do Sistema Solar.',
+    texto:
+      'É mesmo. Sua gravidade é tão forte que influencia vários objetos do Sistema Solar.',
   },
   {
     nome: 'Cecília',
@@ -91,7 +93,8 @@ const DIALOGOS: {
     nome: 'Tito',
     lado: 'direita',
     expressao: 'explicando',
-    texto: 'Em muitos casos, sua enorme gravidade pode alterar a trajetória de asteroides e cometas. Por isso, muitos cientistas dizem que Júpiter exerce um papel importante na dinâmica do Sistema Solar.',
+    texto:
+      'Em muitos casos, sua enorme gravidade pode alterar a trajetória de asteroides e cometas. Por isso, muitos cientistas dizem que Júpiter exerce um papel importante na dinâmica do Sistema Solar.',
   },
   {
     nome: 'Cosmo',
@@ -109,9 +112,7 @@ export default function MissaoJupiterScreen() {
   };
 
   const voltarAoSistemaSolar = () => {
-    if (!planetasConcluidos.includes('jupiter')) {
-      planetasConcluidos.push('jupiter');
-    }
+    concluirPlaneta('jupiter');
     router.replace('/solar-system' as any);
   };
 

@@ -1,25 +1,28 @@
 import {
-    Canvas,
-    Path,
-    Skia,
-    SkPath,
+  Canvas,
+  Path,
+  Skia,
+  SkPath,
 } from '@shopify/react-native-skia';
 import React, { useMemo, useRef, useState } from 'react';
 import {
-    Image,
-    ImageBackground,
-    PanResponder,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  Image,
+  ImageBackground,
+  PanResponder,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
+
+type Ferramenta = 'pincel' | 'borracha';
 
 type Traco = {
   caminho: SkPath;
   cor: string;
   espessura: number;
+  ferramenta: Ferramenta;
 };
 
 type Props = {
@@ -32,13 +35,22 @@ type Props = {
 };
 
 const CORES = [
-  '#FFD43B',
-  '#FF8A00',
-  '#FF4D4D',
-  '#6C63FF',
+  '#FFD43B', 
+  '#FF8A00', 
+  '#FF4D4D', 
+  '#FF69B4', 
+  '#9C27B0', 
+  '#6C63FF', 
+  '#2196F3', 
+  '#00BCD4', 
+  '#4CAF50', 
+  '#8BC34A', 
+  '#8D6E63', 
+  '#000000', 
 ];
 
 const ESPESSURAS = [4, 7, 12];
+const ESPESSURA_BORRACHA = 30;
 
 export default function MissaoDesenho({
   imagemFundo,
@@ -52,7 +64,10 @@ export default function MissaoDesenho({
   const [tracos, setTracos] = useState<Traco[]>([]);
   const [corAtual, setCorAtual] = useState(CORES[0]);
   const [espessuraAtual, setEspessuraAtual] = useState(7);
+  const [ferramentaAtual, setFerramentaAtual] =
+    useState<Ferramenta>('pincel');
   const [rolagemAtiva, setRolagemAtiva] = useState(true);
+  const [versaoDesenho, setVersaoDesenho] = useState(0);
 
   const caminhoAtual = useRef<SkPath | null>(null);
 
@@ -69,9 +84,15 @@ export default function MissaoDesenho({
       {
         caminho: novoCaminho,
         cor: corAtual,
-        espessura: espessuraAtual,
+        espessura:
+          ferramentaAtual === 'borracha'
+            ? ESPESSURA_BORRACHA
+            : espessuraAtual,
+        ferramenta: ferramentaAtual,
       },
     ]);
+
+    setVersaoDesenho((versaoAnterior) => versaoAnterior + 1);
   };
 
   const continuarTraco = (x: number, y: number) => {
@@ -81,9 +102,8 @@ export default function MissaoDesenho({
 
     caminhoAtual.current.lineTo(x, y);
 
-    setTracos((tracosAnteriores) => [
-      ...tracosAnteriores,
-    ]);
+    
+    setVersaoDesenho((versaoAnterior) => versaoAnterior + 1);
   };
 
   const finalizarTraco = () => {
@@ -95,7 +115,6 @@ export default function MissaoDesenho({
       PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
-
         onStartShouldSetPanResponderCapture: () => true,
         onMoveShouldSetPanResponderCapture: () => true,
 
@@ -103,13 +122,11 @@ export default function MissaoDesenho({
           setRolagemAtiva(false);
 
           const { locationX, locationY } = evento.nativeEvent;
-
           adicionarNovoTraco(locationX, locationY);
         },
 
         onPanResponderMove: (evento) => {
           const { locationX, locationY } = evento.nativeEvent;
-
           continuarTraco(locationX, locationY);
         },
 
@@ -125,18 +142,18 @@ export default function MissaoDesenho({
 
         onPanResponderTerminationRequest: () => false,
       }),
-    [corAtual, espessuraAtual]
+    [corAtual, espessuraAtual, ferramentaAtual]
   );
 
-  const desfazerUltimoTraco = () => {
-    setTracos((tracosAnteriores) =>
-      tracosAnteriores.slice(0, -1)
-    );
+  const selecionarCor = (cor: string) => {
+    setCorAtual(cor);
+    setFerramentaAtual('pincel');
   };
 
   const limparDesenho = () => {
     setTracos([]);
     caminhoAtual.current = null;
+    setVersaoDesenho((versaoAnterior) => versaoAnterior + 1);
   };
 
   if (!iniciouDesenho) {
@@ -159,46 +176,31 @@ export default function MissaoDesenho({
               />
             )}
 
-            <Text style={styles.selo}>
-              ATIVIDADE CRIATIVA
-            </Text>
+            <Text style={styles.selo}>ATIVIDADE CRIATIVA</Text>
 
-            <Text style={styles.titulo}>
-              {titulo}
-            </Text>
+            <Text style={styles.titulo}>{titulo}</Text>
 
-            <Text style={styles.instrucao}>
-              {instrucao}
-            </Text>
+            <Text style={styles.instrucao}>{instrucao}</Text>
 
             <Text style={styles.textoOpcional}>
-              Esta atividade é opcional. Você pode desenhar agora
-              ou receber seu distintivo e continuar a aventura.
+              Esta atividade é opcional. Você pode desenhar agora ou
+              receber seu distintivo e continuar a aventura.
             </Text>
 
             <Pressable
               style={styles.botaoPrincipal}
               onPress={() => setIniciouDesenho(true)}
             >
-              <Text style={styles.textoBotao}>
-                Fazer desenho 
-              </Text>
+              <Text style={styles.textoBotao}>Fazer desenho</Text>
             </Pressable>
 
             <View style={styles.separadorContainer}>
               <View style={styles.linhaSeparador} />
-
-              <Text style={styles.textoSeparador}>
-                ou
-              </Text>
-
+              <Text style={styles.textoSeparador}>ou</Text>
               <View style={styles.linhaSeparador} />
             </View>
 
-            <Pressable
-              style={styles.botaoPular}
-              onPress={aoPular}
-            >
+            <Pressable style={styles.botaoPular} onPress={aoPular}>
               <Text style={styles.textoBotaoPular}>
                 Receber distintivo agora
               </Text>
@@ -222,62 +224,87 @@ export default function MissaoDesenho({
         scrollEnabled={rolagemAtiva}
       >
         <View style={styles.cardDesenho}>
-          <Text style={styles.selo}>
-            ATIVIDADE CRIATIVA
-          </Text>
+          <Text style={styles.selo}>ATIVIDADE CRIATIVA</Text>
 
-          <Text style={styles.tituloDesenho}>
-            {titulo}
-          </Text>
+          <Text style={styles.tituloDesenho}>{titulo}</Text>
 
           <Text style={styles.instrucaoDesenho}>
             Desenhe com o dedo ou arrastando o mouse.
           </Text>
 
-          <View
-            style={styles.quadro}
-            {...panResponder.panHandlers}
-          >
+          <View style={styles.quadro} {...panResponder.panHandlers}>
             <Canvas
+              key={`canvas-${tracos.length}`}
               style={styles.canvas}
               pointerEvents="none"
             >
               {tracos.map((traco, indice) => (
                 <Path
-                  key={indice}
+                  key={`${indice}-${versaoDesenho}`}
                   path={traco.caminho}
                   color={traco.cor}
                   style="stroke"
                   strokeWidth={traco.espessura}
                   strokeCap="round"
                   strokeJoin="round"
+                  blendMode={
+                    traco.ferramenta === 'borracha'
+                      ? 'clear'
+                      : 'srcOver'
+                  }
                 />
               ))}
             </Canvas>
           </View>
 
-          <Text style={styles.tituloFerramenta}>
-            Escolha uma cor
-          </Text>
+          <Text style={styles.tituloFerramenta}>Escolha uma cor</Text>
 
           <View style={styles.coresContainer}>
             {CORES.map((cor) => (
               <Pressable
                 key={cor}
+                accessibilityRole="button"
+                accessibilityLabel={`Selecionar a cor ${cor}`}
                 style={[
                   styles.botaoCor,
-                  {
-                    backgroundColor: cor,
-                  },
-                  corAtual === cor && styles.corSelecionada,
+                  { backgroundColor: cor },
+                  ferramentaAtual === 'pincel' &&
+                    corAtual === cor &&
+                    styles.corSelecionada,
                 ]}
-                onPress={() => setCorAtual(cor)}
+                onPress={() => selecionarCor(cor)}
               />
             ))}
           </View>
 
+          <Text style={styles.tituloFerramenta}>Ferramentas</Text>
+
+          <View style={styles.ferramentasContainer}>
+            <Pressable
+              style={[
+                styles.botaoFerramenta,
+                ferramentaAtual === 'pincel' &&
+                  styles.ferramentaSelecionada,
+              ]}
+              onPress={() => setFerramentaAtual('pincel')}
+            >
+              <Text style={styles.textoBotaoFerramenta}>Pincel</Text>
+            </Pressable>
+
+            <Pressable
+              style={[
+                styles.botaoFerramenta,
+                ferramentaAtual === 'borracha' &&
+                  styles.ferramentaSelecionada,
+              ]}
+              onPress={() => setFerramentaAtual('borracha')}
+            >
+              <Text style={styles.textoBotaoFerramenta}>Borracha</Text>
+            </Pressable>
+          </View>
+
           <Text style={styles.tituloFerramenta}>
-            Espessura do pincel
+            Espessura
           </Text>
 
           <View style={styles.espessurasContainer}>
@@ -289,7 +316,10 @@ export default function MissaoDesenho({
                   espessuraAtual === espessura &&
                     styles.espessuraSelecionada,
                 ]}
-                onPress={() => setEspessuraAtual(espessura)}
+                onPress={() => {
+                  setEspessuraAtual(espessura);
+                  setFerramentaAtual('pincel');
+                }}
               >
                 <View
                   style={[
@@ -309,50 +339,27 @@ export default function MissaoDesenho({
             <Pressable
               style={[
                 styles.botaoEdicao,
-                tracos.length === 0 &&
-                  styles.botaoEdicaoDesativado,
-              ]}
-              onPress={desfazerUltimoTraco}
-              disabled={tracos.length === 0}
-            >
-              <Text style={styles.textoBotaoEdicao}>
-                ↶ Desfazer
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={[
-                styles.botaoEdicao,
-                tracos.length === 0 &&
-                  styles.botaoEdicaoDesativado,
+                tracos.length === 0 && styles.botaoEdicaoDesativado,
               ]}
               onPress={limparDesenho}
               disabled={tracos.length === 0}
             >
-              <Text style={styles.textoBotaoEdicao}>
-                Limpar
-              </Text>
+              <Text style={styles.textoBotaoEdicao}>Limpar desenho</Text>
             </Pressable>
           </View>
 
           <Pressable
             style={[
               styles.botaoPrincipal,
-              tracos.length === 0 &&
-                styles.botaoDesativado,
+              tracos.length === 0 && styles.botaoDesativado,
             ]}
             onPress={aoConcluir}
             disabled={tracos.length === 0}
           >
-            <Text style={styles.textoBotao}>
-              Concluir desenho
-            </Text>
+            <Text style={styles.textoBotao}> Concluir desenho</Text>
           </Pressable>
 
-          <Pressable
-            style={styles.botaoSecundario}
-            onPress={aoPular}
-          >
+          <Pressable style={styles.botaoSecundario} onPress={aoPular}>
             <Text style={styles.textoBotaoSecundario}>
               Sair sem salvar e receber distintivo
             </Text>
@@ -383,7 +390,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 18,
     paddingVertical: 28,
     backgroundColor: 'rgba(3, 4, 20, 0.58)',
   },
@@ -408,7 +415,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#8A6CFF',
     borderRadius: 24,
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingVertical: 22,
   },
 
@@ -507,7 +514,7 @@ const styles = StyleSheet.create({
 
   quadro: {
     width: '100%',
-    height: 300,
+    height: 320,
     overflow: 'hidden',
     backgroundColor: '#FFFFFF',
     borderWidth: 3,
@@ -528,9 +535,12 @@ const styles = StyleSheet.create({
   },
 
   coresContainer: {
+    width: '100%',
+    maxWidth: 430,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 14,
+    gap: 12,
   },
 
   botaoCor: {
@@ -542,9 +552,43 @@ const styles = StyleSheet.create({
   },
 
   corSelecionada: {
-    borderWidth: 5,
-    borderColor: '#FFFFFF',
-    transform: [{ scale: 1.12 }],
+    borderWidth: 4,
+    borderColor: '#FFD54F',
+    transform: [{ scale: 1.16 }],
+  },
+
+  ferramentasContainer: {
+    width: '100%',
+    maxWidth: 360,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 12,
+  },
+
+  botaoFerramenta: {
+    flex: 1,
+    minHeight: 58,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 7,
+    backgroundColor: '#292342',
+    borderWidth: 2,
+    borderColor: '#514B70',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+  },
+
+  ferramentaSelecionada: {
+    borderColor: '#FFD54F',
+    backgroundColor: '#3A2F67',
+  },
+
+  textoBotaoFerramenta: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 
   espessurasContainer: {
@@ -554,8 +598,8 @@ const styles = StyleSheet.create({
   },
 
   botaoEspessura: {
-    width: 52,
-    height: 42,
+    width: 54,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#292342',
@@ -608,8 +652,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#5C38D6',
     borderRadius: 30,
     paddingVertical: 15,
+    paddingHorizontal: 16,
     marginTop: 20,
-
     shadowColor: '#8A6CFF',
     shadowOffset: {
       width: 0,
@@ -631,6 +675,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 
   botaoSecundario: {

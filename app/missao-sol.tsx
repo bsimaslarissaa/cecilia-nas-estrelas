@@ -1,12 +1,12 @@
-import { planetasConcluidos } from '@/app/progresso';
 import MissaoAtividade from '@/components/MissaoAtividade';
 import MissaoDesenho from '@/components/MissaoDesenho';
 import MissaoDialogo from '@/components/MissaoDialogo';
 import MissaoDistintivo from '@/components/MissaoDistintivo';
+import { concluirPlaneta } from '@/constants/progresso';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 
-type EtapaMissao = 'dialogo' | 'atividade' | 'desenho' |'distintivo';
+type EtapaMissao = 'dialogo' | 'atividade' | 'desenho' | 'distintivo';
 
 const AVATARES: Record<string, Record<string, any>> = {
   Cecília: {
@@ -96,9 +96,7 @@ export default function MissaoSolScreen() {
   };
 
   const voltarAoSistemaSolar = () => {
-    if (!planetasConcluidos.includes('sol')) {
-      planetasConcluidos.push('sol');
-    }
+    concluirPlaneta('sol');
     router.replace('/solar-system' as any);
   };
 
@@ -137,17 +135,17 @@ export default function MissaoSolScreen() {
   }
 
   if (etapa === 'desenho') {
-  return (
-    <MissaoDesenho
-      imagemFundo={require('@/assets/images/nave-sol.jpeg')}
-      imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
-      titulo="Desenhe o Sol"
-      instrucao="Use as cores para criar o Sol do jeito que você imagina. Esta atividade é opcional."
-      aoConcluir={() => setEtapa('distintivo')}
-      aoPular={() => setEtapa('distintivo')}
-    />
-  );
-}
+    return (
+      <MissaoDesenho
+        imagemFundo={require('@/assets/images/nave-sol.jpeg')}
+        imagemPersonagem={require('@/assets/images/cecialegrecuriosa.png')}
+        titulo="Desenhe o Sol"
+        instrucao="Use as cores para criar o Sol do jeito que você imagina. Esta atividade é opcional."
+        aoConcluir={() => setEtapa('distintivo')}
+        aoPular={() => setEtapa('distintivo')}
+      />
+    );
+  }
 
   return (
     <MissaoDistintivo
