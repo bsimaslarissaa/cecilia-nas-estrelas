@@ -172,9 +172,9 @@ export default function MissaoNetunoScreen() {
     setEtapa('distintivo');
   };
 
-  const voltarAoSistemaSolar = () => {
+  const abrirPlanetasAnoes = () => {
     concluirPlaneta('netuno');
-    router.replace('/solar-system' as any);
+    router.replace('/missao-planetas-anoes' as any);
   };
 
   if (etapa === 'dialogo') {
@@ -239,7 +239,7 @@ Você descobriu que Netuno é um gigante gelado, possui ventos extremamente velo
 Agora você faz parte da Frota Capivariana Interplanetária!
 
 Toda descoberta é o começo de uma nova jornada.`}
-      aoContinuar={voltarAoSistemaSolar}
+      aoContinuar={abrirPlanetasAnoes}
     />
   );
 }
